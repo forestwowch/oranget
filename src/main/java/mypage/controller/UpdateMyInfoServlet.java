@@ -38,72 +38,53 @@ public class UpdateMyInfoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		//프로필사진 저장경로 설정	
+		String root = getServletContext().getRealPath("/");
+		String saveDirectory = root + "upload/member/";
 		
-				//프로필사진 저장경로 설정	
-				String root = getServletContext().getRealPath("/");
-				String saveDirectory = root + "upload/member/";
-				
-				int maxSize = 10*1024*1024;
-				
-				MultipartRequest mRequest = new MultipartRequest(request, saveDirectory, maxSize, "UTF-8", new DefaultFileRenamePolicy());
-				
-				
-				
-				/*
-				Member member = new Member();
-				member.setMemberId(request.getParameter("memberId"));
-				member.setMemberPw(request.getParameter("memberPw"));
-				member.setMemberName(request.getParameter("memberName"));
-				member.setPhone(request.getParameter("phone"));
-				member.setPostcode(request.getParameter("postcode"));
-				member.setAddress1(request.getParameter("address1"));
-				member.setAddress2(request.getParameter("address2"));
-				member.setEmail(request.getParameter("email"));
-				member.setFilePath(request.getParameter("filepath"));
-				member.setSms(Integer.parseInt(request.getParameter("sms")));
-				member.setLocal1(request.getParameter("local1"));
-				member.setLocal2(request.getParameter("local2"));
-				member.setLocal3(request.getParameter("local3"));
-				*/
-				
-				Member member = new Member();
-				member.setMemberId(mRequest.getParameter("memberId"));
-				member.setMemberPw(mRequest.getParameter("memberPw"));
-				member.setPhone(mRequest.getParameter("phone"));
+		int maxSize = 10*1024*1024;
 		
-
-				member.setFilePath(mRequest.getFilesystemName("filepath"));
-				member.setSms(Integer.parseInt(mRequest.getParameter("sms")));	
-				member.setLocal1(Integer.parseInt(mRequest.getParameter("local1")));
-				member.setLocal2(Integer.parseInt(mRequest.getParameter("local2")));
-				member.setLocal3(Integer.parseInt(mRequest.getParameter("local3")));
+		MultipartRequest mRequest = new MultipartRequest(request, saveDirectory, maxSize, "UTF-8", new DefaultFileRenamePolicy());
+		
+		Member member = new Member();
+		String oldFilePath = mRequest.getParameter("oldFilePath");
+		System.out.println(oldFilePath);
+		System.out.println(mRequest.getFilesystemName("filepath"));
+		member.setMemberId(mRequest.getParameter("memberId"));
+		member.setMemberPw(mRequest.getParameter("memberPw"));
+		member.setPhone(mRequest.getParameter("phone"));
+		
+		if(mRequest.getFilesystemName("filepath") != null) {
+			member.setFilePath(mRequest.getFilesystemName("filepath"));
+		}else {
+			member.setFilePath(oldFilePath);	
+		}
+		member.setSms(Integer.parseInt(mRequest.getParameter("sms")));
 				
-				
-				String oldFilePath = mRequest.getParameter("oldFilePath");
-				int result = new UpdateMyInfoService().updateMember(member);
-				
-				RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-
-				request.setAttribute("loc", "/myUserInfo?local1="+member.getLocal1()+"&local2="+member.getLocal2()+"&local3="+member.getLocal3());
-				if(result>0) {
-					
-					//정보변경 성공했을때 페이지에 변경된거 반영이안됐음 그래서 회원정보 다시 조회해서 세션에 다시 넣어줌
-					request.setAttribute("msg", "정보 변경이 완료되었습니다.");
-					//view.forward(request, response);
-					
-					Member m = new MemberService().selectOneMember(member.getMemberId());
-					HttpSession session = request.getSession(false);
-					session.setAttribute("m", m); //세션의 member를 조회할때 멤버레벨 이런게 누락됐음 주의할것 "m"인지 "member"인지 확인해볼것
-
-				}else {
-					request.setAttribute("msg", "정보 변경 실패함");
-					//view.forward(request, response);
-					
-				}
-				view.forward(request, response);
-
-
-			}
+		member.setLocal1(Integer.parseInt(mRequest.getParameter("local1")));
+		member.setLocal2(Integer.parseInt(mRequest.getParameter("local2")));
+		member.setLocal3(Integer.parseInt(mRequest.getParameter("local3")));
+		
+		int result = new UpdateMyInfoService().updateMember(member);
+		
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+		request.setAttribute("loc", "/myUserInfo?local1="+member.getLocal1()+"&local2="+member.getLocal2()+"&local3="+member.getLocal3());
+		if(result>0) {
+			
+			//정보변경 성공했을때 페이지에 변경된거 반영이안됐음 그래서 회원정보 다시 조회해서 세션에 다시 넣어줌
+			request.setAttribute("msg", "정보 변경이 완료되었습니다.");
+			//view.forward(request, response);
+			
+			Member m = new MemberService().selectOneMember(member.getMemberId());
+			HttpSession session = request.getSession(false);
+			session.setAttribute("m", m); //세션의 member를 조회할때 멤버레벨 이런게 누락됐음 주의할것 "m"인지 "member"인지 확인해볼것
+		}else {
+			request.setAttribute("msg", "정보 변경 실패함");
+			//view.forward(request, response);	
+		}
+		view.forward(request, response);
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
