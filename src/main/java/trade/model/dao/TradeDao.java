@@ -425,7 +425,7 @@ public class TradeDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Trade> list = new ArrayList<Trade>();
-		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, N.* FROM (SELECT B.*, A.SIGUNGU_DO, A.SIGUNGU_NAME FROM TRADE B LEFT JOIN SIGUNGU A ON (B.TRADE_LOCAL = A.SIGUNGU_NO)ORDER BY READ_COUNT DESC)N) WHERE RNUM BETWEEN ? AND ?";
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, N.* FROM (SELECT B.*, A.SIGUNGU_DO, A.SIGUNGU_NAME FROM TRADE B LEFT JOIN SIGUNGU A ON (B.TRADE_LOCAL = A.SIGUNGU_NO) WHERE (TRADE_STATUS=1 OR TRADE_STATUS=2) ORDER BY READ_COUNT DESC)N) WHERE RNUM BETWEEN ? AND ?";
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, start);
@@ -465,7 +465,7 @@ public class TradeDao {
 		ResultSet rset = null;
 		ArrayList<Trade> list = new ArrayList<Trade>();
 		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, N.* FROM (SELECT B.*, A.SIGUNGU_DO, A.SIGUNGU_NAME FROM TRADE B LEFT JOIN SIGUNGU A ON (B.TRADE_LOCAL = A.SIGUNGU_NO)\r\n"
-				+ "WHERE (TRADE_TITLE LIKE ?) OR (SIGUNGU_DO LIKE ?) OR (SIGUNGU_NAME LIKE ?) ORDER BY TRADE_NO DESC)N) WHERE RNUM BETWEEN ? AND ?\r\n";
+				+ "WHERE (TRADE_TITLE LIKE ?) OR (SIGUNGU_DO LIKE ?) OR (SIGUNGU_DO LIKE ?) ORDER BY TRADE_NO DESC)N) WHERE RNUM BETWEEN ? AND ?\r\n";
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, '%'+search+'%');

@@ -102,7 +102,7 @@ img {
 							<img src="/upload/trade/${t.getFilepath() }">
 						</div>
 						<div class="info">
-							<div class="flavor">${t.getTradeTitle() }</div>
+							<div class="flavor overflow-text">${t.getTradeTitle() }</div>
 							<div class="f-price-area">
 								<span class="f-price"><fmt:formatNumber value="${t.getPrice() }" pattern="#,###" />원</span>
 							</div>

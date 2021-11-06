@@ -215,11 +215,11 @@ public class TradeService {
 		for (int i = 0; i < pageNaviSize; i++) {
 			if (pageNo == reqPage) {
 				pageNavi += "<li class='page-item active'>";
-				pageNavi += "<a class='page-link' href='/tradeList?reqPage=" + pageNo + "&memberId=" + memberId + "'>";
+				pageNavi += "<a class='page-link' href='/tradeLoginList?reqPage=" + pageNo + "&memberId=" + memberId + "'>";
 				pageNavi += pageNo + "</a></li>";
 			} else {
 				pageNavi += "<li class='page-item'>";
-				pageNavi += "<a class='page-link' href='/tradeList?reqPage=" + pageNo + "&memberId=" + memberId + "'>";
+				pageNavi += "<a class='page-link' href='/tradeLoginList?reqPage=" + pageNo + "&memberId=" + memberId + "'>";
 				pageNavi += pageNo + "</a></li>";
 			}
 			pageNo++;
@@ -230,7 +230,7 @@ public class TradeService {
 		
 		if (pageNo <= totalPage) {
 			pageNavi += "<li class='page-item'>";
-			pageNavi += "<a class='page-link' href='/tradeList?reqPage=" + pageNo + "&memberId=" + memberId + "'>";
+			pageNavi += "<a class='page-link' href='/tradeLoginList?reqPage=" + pageNo + "&memberId=" + memberId + "'>";
 			pageNavi += "&raquo;</a></li>";
 		}
 		pageNavi += "</ul>";
