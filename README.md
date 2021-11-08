@@ -1,1 +1,2 @@
-<h1>adassadasdasdadssasd</h1>
+<h1>오렌지마켓 백업 파일본</h1>
+<h5>exp.sql은 해당 파일의 데이터베이스 sql문 백업 파일 입니다.</h5>
